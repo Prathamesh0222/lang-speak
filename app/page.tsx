@@ -3,9 +3,14 @@ import { TextArea } from "@/components/Inputs/TextArea";
 import "regenerator-runtime/runtime";
 import { useState } from "react";
 import { SpeechRecognitionComponent } from "@/components/SpeechRecognition/SpeechRecognition";
+import { IconVolume } from "@tabler/icons-react";
 
 export default function Home() {
   const [sourceText, setSourceText] = useState<string>("");
+  const handleAudioPlayback = (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(utterance);
+  };
   return (
     <div>
       <div className="h-[50rem] w-full dark:bg-black bg-white  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
@@ -33,7 +38,8 @@ export default function Home() {
                           <div className="flex flex-row justify-between w-full">
                               <span className="cursor-pointer flex space-x-2 flex-row">
                                 <SpeechRecognitionComponent setSourceText={setSourceText}/>
-
+                                <IconVolume size={22} onClick={()=>{handleAudioPlayback(sourceText)}} className="text-gray-400"/>
+                                
                               </span>
                           </div>
                       </div>
