@@ -1,20 +1,23 @@
+
 import { useEffect, useState } from "react";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-    apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY || "",
     dangerouslyAllowBrowser: true
 })
 
-export const useTranslate = (sourceText:string, selectedLanguage:string) => {
+const useTranslate = (sourceText:string, selectedLanguage:string) => {
     const [targetText, setTargetText] = useState("");
 
     useEffect(()=>{
         const handleTranslate = async(sourceText:string)=>{
             try{
                 const response = await openai.chat.completions.create({
-                    model:'gpt-4o',
-                    messages:[{role:'user',content:
+                    model:'gpt-3.5-turbo',
+                    messages:[{
+                        role:'user',
+                        content:
                         `
                         You will be provided with a sentence. This sentence is ${sourceText}.
                         Your task is to:
@@ -39,4 +42,6 @@ export const useTranslate = (sourceText:string, selectedLanguage:string) => {
     },[sourceText,selectedLanguage])
     return targetText;
 }
+
+export default useTranslate;
 
